@@ -46,5 +46,5 @@ const gloves = [
     },
 ]
 
-/* export default cookies; */
+/* export default gloves; */
 module.exports = gloves;
