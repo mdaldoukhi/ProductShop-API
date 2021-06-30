@@ -3,12 +3,12 @@ const express = require('express')
 let gloves = require("./data")
 const cors = require("cors");
 const slugify = require('slugify')
-const bodyParser = require("body-parser")
 const app = express();
 
 /* Middleware */
 app.use(cors());
 
+/* */
 app.use(express.json());
 
 /* Get Routes */
@@ -33,7 +33,7 @@ app.delete("/gloves/:productId", (req, res) => {
 app.post("/gloves", (req, res) => {
   /* Define the object's value and key */
   const id = gloves.length + 1;
-  const slug = slugify(req.body.name, {lower: true}); //lower here to make value lowerCase
+  const slug = slugify(req.body.name, { lower: true }); //lower here to make value lowerCase
   const newProduct = {
     id,
     slug,
@@ -43,6 +43,18 @@ app.post("/gloves", (req, res) => {
   res.status(201).json(newProduct) //will show on the post man the content
 })
 
+/* Updates Routes */
+app.put("/gloves/:productId", (req, res) => {
+  const { productId } = req.params;
+  const foundProduct = gloves.find(glove => glove.id === +productId) // will check if the id exist or not
+  if (foundProduct) { 
+    for (const key in req.body) foundProduct[key] = req.body[key] //will update the product depend on the change which key by for loop
+    foundProduct.slug = slugify(foundProduct.name, { lower: true }); //lower here to make value lowerCase
+    res.status(204).end()
+  } else {
+    res.status(404).json({ message: "Not Found" })
+  }
+})
 /* Fine to add 9000 instead of 8000 */
 app.listen(8000, () => {
   console.log("The application is running on localhost:8000");
