@@ -20,6 +20,7 @@ exports.gloveFetch = async (req, res, next) => {
 };
 exports.createGlove = async (req, res, next) => {
   try {
+    if (req.file) req.body.image = `http://${req.get("host")}/${req.file.path}`
     const newGlove = await Glove.create(req.body);
     res.status(201).json(newGlove); //will show on the post man the content
   } catch (error) {
@@ -36,8 +37,9 @@ exports.deleteGlove = async (req, res, next) => {
 };
 exports.updateGlove = async (req, res, next) => {
   try {
+    if (req.file) req.body.image = `http://${req.get("host")}/${req.file.path}`
     await req.glove.update(req.body);
-    res.status(204).end();
+    res.json(req.glove);
   } catch (error) {
     next(error)
   }

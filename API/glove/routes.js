@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const {
     gloveFetch,
     deleteGlove,
@@ -11,15 +12,23 @@ const router = express.Router();
 /* Middleware that handles fetching */
 router.param("productId", async (req, res, next, productId) => {
     const glove = await fetchProduct(productId, next)
-    if(glove) {
+    if (glove) {
         req.glove = glove;
         next()
-    }else {
+    } else {
         const error = new Error("Glove Not Found");
         error.status = 404;
         next(error)
     }
 })
+
+const storage = multer.diskStorage({
+    destination: "./media",
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}${file.originalname}`)
+    }
+})
+const upload = multer({ storage })
 /* Read Routes */
 router.get("/", gloveFetch);
 
@@ -27,9 +36,9 @@ router.get("/", gloveFetch);
 router.delete("/:productId", deleteGlove);
 
 /* Create Routes */
-router.post("/", createGlove);
+router.post("/", upload.single("image"), createGlove);
 
 /* Updates Routes */
-router.put("/:productId", updateGlove);
+router.put("/:productId", upload.single("image"), updateGlove);
 
 module.exports = router;

@@ -11,7 +11,7 @@ app.use(express.json());
 
 /* Routes Path */
 app.use("/gloves", gloveRoutes)
-
+app.use("/media", express.static("media"))
 /* Handling Middleware */
 app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ message: err.message || "Internal Server Error" })
