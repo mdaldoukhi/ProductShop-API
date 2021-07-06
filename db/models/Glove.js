@@ -4,9 +4,9 @@ module.exports = (sequelize, DataTypes) => {
         name: { type: DataTypes.STRING, allowNull: false },
         slug: {
             type: DataTypes.STRING,
-            unique: true
+            unique: true    
         },
-        price: { type: DataTypes.INTEGER, validate: {min: 1}, defaultValue: 1 },
+        price: { type: DataTypes.INTEGER, validate: { min: 1 }, defaultValue: 1 },
         detail: { type: DataTypes.STRING },
         image: { type: DataTypes.STRING },
     })

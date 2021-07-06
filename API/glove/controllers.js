@@ -1,48 +1,44 @@
 const { Glove } = require("../../db/models");
 
-exports.gloveFetch = async (req, res) => {
+exports.fetchProduct = async (productId, next) => {
+  try {
+    const glove = await Glove.findByPk(productId);
+    return glove
+  } catch (error) {
+    next(error)
+  }
+}
+exports.gloveFetch = async (req, res, next) => {
   try {
     const gloves = await Glove.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
     res.json(gloves);
   } catch (error) {
-    res.status(500).json({ meesage: error.message });
+    next(error)
   }
 };
-exports.createGlove = async (req, res) => {
+exports.createGlove = async (req, res, next) => {
   try {
     const newGlove = await Glove.create(req.body);
     res.status(201).json(newGlove); //will show on the post man the content
   } catch (error) {
-    res.status(500).json({ meesage: error.message });
+    next(error)
   }
 };
-exports.deleteGlove = async (req, res) => {
-  const { productId } = req.params;
+exports.deleteGlove = async (req, res, next) => {
   try {
-    const foundProduct = await Glove.findByPk(productId);
-    if (foundProduct) {
-      await foundProduct.destroy();
-      res.status(204).end();
-    } else {
-      res.status(404).json({ message: "Not Found" });
-    }
+    await req.glove.destroy();
+    res.status(204).end();
   } catch (error) {
-    res.status(500).json({ meesage: error.message });
+    next(error)
   }
 };
-exports.updateGlove = async (req, res) => {
-  const { productId } = req.params;
+exports.updateGlove = async (req, res, next) => {
   try {
-    const foundProduct = await Glove.findByPk(productId); // will check if the id exist or not
-    if (foundProduct) {
-      await foundProduct.update(req.body);
-      res.status(204).end();
-    } else {
-      res.status(404).json({ message: "Not Found" });
-    }
+    await req.glove.update(req.body);
+    res.status(204).end();
   } catch (error) {
-    res.status(500).json({ meesage: error.message });
+    next(error)
   }
 };
