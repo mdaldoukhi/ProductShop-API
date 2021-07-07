@@ -36,7 +36,6 @@ router.get("/", gloveFetch);
 router.delete("/:productId", deleteGlove);
 
 /* Create Routes */
-router.post("/", upload.single("image"), createGlove);
 
 /* Updates Routes */
 router.put("/:productId", upload.single("image"), updateGlove);
