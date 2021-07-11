@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require("cors");
 const gloveRoutes = require('./API/glove/routes')
 const shopRoutes = require('./API/shop/routes')
+const userRoutes = require('./API/user/routes')
 const db = require("./db/models/index");
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 /* Routes Path */
 app.use("/gloves", gloveRoutes)
 app.use("/shops", shopRoutes)
+app.use(userRoutes)
 
 app.use("/media", express.static("media"))
 

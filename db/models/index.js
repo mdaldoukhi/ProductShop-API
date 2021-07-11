@@ -33,6 +33,7 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
 db.Shop.hasMany(db.Glove, {
   foreignKey: "shopId",
   as: "gloves"
@@ -41,4 +42,5 @@ db.Glove.belongsTo(db.Shop, {
   foreignKey: "shopId",
   as: "shop"
 })
+
 module.exports = db;
