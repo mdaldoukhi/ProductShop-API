@@ -7,13 +7,15 @@ const userRoutes = require('./API/user/routes')
 const db = require("./db/models/index");
 const passport = require("passport");
 const { localStrategy } = require("./middleware/passport");
+const { jwtStrategy } = require("./middleware/passport");
 const app = express();
 
 /* Middleware */
 app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
-passport.use(localStrategy)
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 /* Routes Path */
 app.use("/gloves", gloveRoutes)

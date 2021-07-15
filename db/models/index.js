@@ -43,4 +43,12 @@ db.Glove.belongsTo(db.Shop, {
   as: "shop"
 })
 
+db.User.hasOne(db.Shop, {
+  as: "bakery",
+  foreignKey: "userId"
+})
+db.Shop.belongsTo(db.User, {
+  as: "user"
+})
+
 module.exports = db;

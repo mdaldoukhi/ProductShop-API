@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const passport = require("passport");
 
 const {
     shopFetch,
@@ -33,9 +34,9 @@ const upload = multer({ storage })
 
 router.get("/", shopFetch);
 
-router.post("/", upload.single("image"), createShop);
+router.post("/", passport.authenticate("jwt", { session: false }), upload.single("image"), createShop);
 
-router.post("/:shopId/gloves", upload.single("image"), createGlove);
+router.post("/:shopId/gloves", passport.authenticate("jwt", { session: false }), upload.single("image"), createGlove);
 
 module.exports = router;
 
